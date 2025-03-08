@@ -1,4 +1,4 @@
-fetch('http://localhost:5000/login', {
+fetch('https://wai-1.onrender.com', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -15,7 +15,7 @@ async function registerUser() {
     const username = "testUser";
     const password = "123456";
 
-    const response = await fetch("http://localhost:5000/register", {
+    const response = await fetch("https://wai-1.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
