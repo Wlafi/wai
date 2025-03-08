@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .login-container {
+      width: 320px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: url('Logo1.png') no-repeat center/cover;
+      border-radius: 50%;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .input-group {
+      margin-top: 20px;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function validateForm(event) {
+      event.preventDefault();
+      
+      // Получаем данные формы
+      const login = document.getElementById("login").value;
+      const password = document.getElementById("password").value;
+      let errorMessage = "";
+      
+      // Простая валидация
+      if (login.trim() === "") {
+        errorMessage += "Логин не может быть пустым.<br>";
+      }
+      if (password.trim() === "") {
+        errorMessage += "Пароль не может быть пустым.<br>";
+      }
+      
+      const errorDiv = document.getElementById("error-message");
+      if (errorMessage) {
+        errorDiv.innerHTML = errorMessage;
+        return;
+      } else {
+        errorDiv.innerHTML = "";
+      }
+      
+      // Проверка данных из localStorage
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        if (userData.login === login && userData.password === password) {
+          alert("Вход успешен!");
+          window.location.href = "idebar.html";
+        } else {
+          alert("Неверный логин или пароль");
+        }
+      } else {
+        alert("Пользователь не найден. Зарегистрируйтесь!");
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo"></div>
+    <h2>Вход</h2>
+    <form onsubmit="validateForm(event)">
+      <div class="input-group">
+        <input type="text" id="login" placeholder="Логин" required>
+        <input type="password" id="password" placeholder="Пароль" required>
+      </div>
+      <div id="error-message" class="error"></div>
+      <button type="submit">Войти</button>
+    </form>
+    <p>Нет аккаунта? <a href="register.html">Регистрация</a></p>
+  </div>
+</body>
+</html>
