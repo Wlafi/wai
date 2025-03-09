@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 });
 
 // Регистрация пользователя
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
     try {
         const { username, email, password } = req.body;
         
