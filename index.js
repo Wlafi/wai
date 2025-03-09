@@ -87,13 +87,13 @@ app.get("/api/users", async (req, res) => {
     const users = await User.find().select("-password"); // Исключаем пароли из ответа
     res.json(users);
 });
-app._router.stack.forEach((middleware) => {
-    if (middleware.route) { 
-        console.log(middleware.route.path, Object.keys(middleware.route.methods));
-    }
-});
-
-// Запуск сервера
 app.listen(PORT, () => {
     console.log(`✅ Сервер запущен на порту ${PORT}`);
+
+    console.log("\n📌 Зарегистрированные маршруты:");
+    app._router.stack.forEach((middleware) => {
+        if (middleware.route) { 
+            console.log(`➡ ${Object.keys(middleware.route.methods).join(", ").toUpperCase()} ${middleware.route.path}`);
+        }
+    });
 });
