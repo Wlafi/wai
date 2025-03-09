@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .register-container {
+            width: 320px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: url('Logo1.png') no-repeat center/cover;
+            border-radius: 50%;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .input-group {
+            margin-top: 20px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        async function registerUser(event) {
+            event.preventDefault();
+            let login = document.getElementById("login").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let errorMessage = "";
+    
+            if (login.trim() === "") {
+                errorMessage += "Логин не может быть пустым.<br>";
+            }
+            if (password.length < 6) {
+                errorMessage += "Пароль должен содержать не менее 6 символов.<br>";
+            }
+    
+            let errorDiv = document.getElementById("error-message");
+            if (errorMessage) {
+                errorDiv.innerHTML = errorMessage;
+            } else {
+                errorDiv.innerHTML = "";
+    
+                // Отправка данных на сервер
+                try {
+                    let response = await fetch("https://wai-1.onrender.com/api/register", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ username: login, email: email, password: password })
+                    });
+    
+                    let data = await response.json();
+                    if (response.ok) {
+                        alert("✅ Регистрация успешна! Теперь войдите в систему.");
+                        window.location.href = "Site.html"; // Переход на страницу входа
+                    } else {
+                        errorDiv.innerHTML = "❌ Ошибка: " + data.error;
+                    }
+                } catch (error) {
+                    errorDiv.innerHTML = "❌ Ошибка подключения к серверу.";
+                }
+            }
+        }
+    </script>    
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo"></div>
+        <h2>Регистрация</h2>
+        <form onsubmit="registerUser(event)">
+            <div class="input-group">
+                <input type="text" id="login" placeholder="Логин" required>
+                <input type="password" id="password" placeholder="Пароль" required>
+                <input type="email" id="email" placeholder="Электронная почта" required>
+            </div>
+            <div id="error-message" class="error"></div>
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        <p>Уже есть аккаунт? <a href="Site.html">Войти</a></p>
+    </div>
+</body>
+</html>

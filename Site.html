@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .login-container {
+      width: 320px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: url('Logo1.png') no-repeat center/cover;
+      border-radius: 50%;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .input-group {
+      margin-top: 20px;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    async function validateForm(event) {
+      event.preventDefault();
+  
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const errorDiv = document.getElementById("error-message");
+      errorDiv.innerHTML = "";
+  
+      if (!email || !password) {
+        errorDiv.innerHTML = "Заполните все поля!";
+        return;
+      }
+  
+      try {
+        const response = await fetch("https://wai-1.onrender.com/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+  
+        const data = await response.json();
+        if (response.ok) {
+          alert("Вход успешен!");
+          localStorage.setItem("token", data.token); // Сохраняем токен
+          window.location.href = "idebar.html";
+        } else {
+          errorDiv.innerHTML = data.error || "Ошибка входа";
+        }
+      } catch (error) {
+        errorDiv.innerHTML = "Ошибка сервера";
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo"></div>
+    <h2>Вход</h2>
+    <form onsubmit="validateForm(event)">
+      <div class="input-group">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Пароль" required>
+      </div>
+      <div id="error-message" class="error"></div>
+      <button type="submit">Войти</button>
+    </form>
+    <p>Нет аккаунта? <a href="register.html">Регистрация</a></p>
+  </div>
+</body>
+</html>
