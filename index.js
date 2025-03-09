@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret"; // Лучше хранить в .env
 
 app.use(cors());
+app.use(cors({ origin: "*" })); // Разрешает запросы от любых доменов
 app.use(express.json());
 
 // Подключение к MongoDB
