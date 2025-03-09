@@ -81,7 +81,7 @@
     
                 // Отправка данных на сервер
                 try {
-                    let response = await fetch("https://wai-1.onrender.com/api/register", {
+                    let response = await fetch("https://wai-1.onrender.com/register", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ username: login, email: email, password: password })
